@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Написать письмо — Тихая гавань</title>
+    <meta name="description" content="Напиши анонимное письмо поддержки для незнакомого человека.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="page-submit">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">Тихая гавань <span>/ письма поддержки</span></a>
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/submit">Написать письмо</a>
+                <button onclick="toggleTheme()" class="theme-toggle" title="Сменить тему" id="themeToggle"
+                    aria-label="Переключить тему">
+                    <span class="theme-icon"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+
+        {% if success %}
+        <!-- Успешная отправка -->
+        <div class="form-card success-card">
+            <h2>Спасибо за твоё письмо</h2>
+            <p>
+                Оно отправлено на модерацию и скоро появится в «Тихой гавани».
+                Возможно, именно твои слова станут для кого-то спасительным берегом.
+            </p>
+            <a href="/" class="btn">Вернуться на главную</a>
+        </div>
+
+        {% else %}
+        <!-- Форма -->
+        <div class="page-title">
+            <h1>Написать письмо</h1>
+            <p>Твои слова могут стать для незнакомого человека тем самым маяком, который не даст потеряться в шторме.
+            </p>
+        </div>
+
+        <!-- Правила -->
+        <div class="guidelines">
+            <h2>Пожалуйста, помни:</h2>
+            <ul>
+                <li>Пиши искренне и бережно — твоё письмо прочитает человек, которому сейчас трудно</li>
+                <li>Не давай советов, если в них нет необходимости — иногда достаточно просто быть рядом в тексте</li>
+                <li>Не указывай личные данные — ни свои, ни чужие. Анонимность здесь важна</li>
+                <li>Письма проходят модерацию перед публикацией. Это занимает немного времени</li>
+            </ul>
+        </div>
+
+        <!-- Форма отправки -->
+        <div class="form-card">
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+                            <form method="POST" id="submitForm">
+                                <div class="form-group">
+                                    <label for="content">Текст письма</label>
+                                    <textarea id="content" name="content" placeholder="Мне бы хотелось сказать тебе..." maxlength="1500"
+                                        oninput="updateCounter()">{{ request.form.get('content', '') }}</textarea>
+                                    <div class="char-counter" id="charCounter">0 / 1500</div>
+                                </div>
+                            
+                                <!-- Капча -->
+                                <div class="form-group">
+                                    <label for="captcha">
+                                        Проверка: сколько будет {{ captcha_a }} + {{ captcha_b }}?
+                                    </label>
+                                    <input type="number" id="captcha" name="captcha_answer" required placeholder="Введи ответ" style="
+                                                            width: 100%;
+                                                            padding: 0.7rem 1rem;
+                                                            border: 1.5px solid var(--border);
+                                                            border-radius: 10px;
+                                                            font-family: var(--font-sans);
+                                                            font-size: 1rem;
+                                                            outline: none;
+                                                        ">
+                                    <input type="hidden" name="captcha_sum" value="{{ captcha_a + captcha_b }}">
+                                </div>
+                            
+                                <button type="submit" class="btn btn-primary">Отправить письмо</button>
+                            </form>
+        </div>
+
+        <a href="/" class="back-link">Вернуться на главную</a>
+        {% endif %}
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>
+                Если тебе нужна профессиональная помощь, обратись в
+                <a href="https://psi.mchs.gov.ru/" target="_blank" rel="noopener">Центр экстренной психологической
+                    помощи МЧС</a>
+                или на линию доверия: <strong>8-800-2000-122</strong>
+            </p>
+            <p class="credit">
+                Проект вдохновлен замечательной инициативой
+                <a href="https://reasonstostay.org" target="_blank" rel="noopener">Reasons to Stay</a>.
+                Я благодарен создателям за эту светлую идею.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function updateCounter() {
+            const textarea = document.getElementById('content');
+            const counter = document.getElementById('charCounter');
+            const len = textarea.value.length;
+            counter.textContent = len + ' / 1500';
+            if (len > 1400) {
+                counter.classList.add('warning');
+            } else {
+                counter.classList.remove('warning');
+            }
+        }
+        // Вызываем при загрузке, если поле было предзаполнено
+        updateCounter();
+
+                function toggleTheme() {
+                        const body = document.body;
+                        const btn = document.getElementById('themeToggle');
+                        body.classList.toggle('dark');
+                        const isDark = body.classList.contains('dark');
+                        btn.textContent = isDark ? '☀️' : '🌙';
+                        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                    }
+
+                    (function () {
+                        const saved = localStorage.getItem('theme');
+                        if (saved === 'dark') {
+                            document.body.classList.add('dark');
+                            const btn = document.getElementById('themeToggle');
+                            if (btn) btn.textContent = '☀️';
+                        }
+                    })();
+    </script>
+</body>
+
+</html>
