@@ -1,7 +1,3 @@
-/* ===========================
-   CSS Variables & Reset
-   =========================== */
-
 :root {
     --bg: #fdfbf7;
     --surface: #ffffff;
@@ -16,6 +12,24 @@
     --radius: 16px;
     --font-serif: 'Georgia', 'Times New Roman', serif;
     --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Тёмная тема */
+html.dark {
+    --bg: #1a1a1a;
+    --surface: #262626;
+    --text: #e8e0d5;
+    --text-secondary: #a8a098;
+    --accent: #6ba5ac;
+    --accent-hover: #5a9198;
+    --accent-light: #1e2d2f;
+    --border: #3a3530;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html.dark body {
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(107, 165, 172, 0.06) 0%, transparent 60%);
 }
 
 * {
@@ -35,184 +49,27 @@ body {
     background-image: radial-gradient(ellipse at 50% 0%, rgba(74, 124, 130, 0.04) 0%, transparent 60%);
 }
 
-/* Тёмная тема */
-body.dark {
-    --bg: #1a1a1a;
-    --surface: #262626;
-    --text: #e8e0d5;
-    --text-secondary: #a8a098;
-    --accent: #6ba5ac;
-    --accent-hover: #5a9198;
-    --accent-light: #1e2d2f;
-    --border: #3a3530;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.3);
-    background-image: radial-gradient(ellipse at 50% 0%, rgba(107, 165, 172, 0.06) 0%, transparent 60%);
-}
-
-body.dark .guidelines {
-    background: #1e2d2f;
-    border-color: #2a4044;
-}
-
-body.dark .form-group textarea {
-    background: #1a1a1a;
-    color: #e8e0d5;
-}
-
-body.dark .form-group textarea::placeholder {
-    color: #6b6054;
-}
-
-body.dark .error-message {
-    background: #3b1a1a;
-    border-color: #5c2a2a;
-    color: #f4b8b8;
-}
-
-body.dark .success-card h2 {
-    color: #6ba5ac;
-}
-
-body.dark .btn {
-    background: #262626;
-    color: #e8e0d5;
-    border-color: #3a3530;
-}
-
-body.dark .btn:hover {
-    background: #333;
-}
-
-body.dark .btn-primary {
-    background: #6ba5ac;
-    color: #1a1a1a;
-    border-color: #6ba5ac;
-}
-
-body.dark .btn-primary:hover {
-    background: #5a9198;
-}
-
-body.dark .btn-ghost {
-    background: transparent;
-}
-
-body.dark .btn-ghost:hover {
-    background: transparent;
-    color: #6ba5ac;
-}
-
-body.dark .btn-outline {
-    color: #6ba5ac !important;
-    border-color: #6ba5ac;
-}
-
-body.dark .btn-outline:hover {
-    background: #6ba5ac;
-    color: #1a1a1a !important;
-}
-
-body.dark .moderation-letter {
-    background: #262626;
-    border-color: #3a3530;
-}
-
-body.dark .moderation-stats {
-    background: #1e2d2f;
-}
-
-body.dark .modal-box {
-    background: #262626;
-}
-
-body.dark .modal-reasons label:hover {
-    background: #1e2d2f;
-}
-
-body.dark input[type="number"],
-body.dark input[type="password"] {
-    background: #1a1a1a;
-    color: #e8e0d5;
-    border-color: #3a3530;
-}
-
-/* ===========================
-   THEME TOGGLE
-   =========================== */
-
-.theme-toggle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
-}
-
-.theme-toggle:hover {
-    border-color: var(--accent);
-    box-shadow: 0 0 14px rgba(74, 124, 130, 0.25);
-    transform: scale(1.05);
-}
-
-.theme-toggle:active {
-    transform: scale(0.93);
-}
-
-/* Иконка — солнце (светлая тема) */
-.theme-icon {
-    display: block;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #e8a85c;
-    transition: all 0.45s ease;
-    box-shadow: 0 0 10px rgba(232, 168, 92, 0.5), 0 0 24px rgba(232, 168, 92, 0.2);
-}
-
-/* Иконка — луна (тёмная тема) */
-body.dark .theme-icon {
-    background: #d5d0c8;
-    box-shadow: 0 0 14px rgba(200, 195, 185, 0.6), 0 0 32px rgba(180, 175, 165, 0.25);
-}
-
-body.dark .theme-toggle:hover {
-    border-color: #8a857d;
-    box-shadow: 0 0 18px rgba(180, 170, 155, 0.4);
-}
-
-/* Анимация при клике */
-.theme-toggle.pressed .theme-icon {
-    transform: scale(0.6);
-    transition: all 0.2s ease;
-}
-
-
-/* ===========================
-   HEADER
-   =========================== */
-
 .header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 1rem 1.5rem;
+    padding: 0 1.5rem;
     box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 64px;
+    display: flex;
+    align-items: center;
 }
 
 .header-inner {
     max-width: 1100px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .logo {
@@ -261,17 +118,11 @@ body.dark .theme-toggle:hover {
     color: white !important;
 }
 
-/* Sticky header only on main page */
-body.page-home .header {
+.header {
     position: sticky;
     top: 0;
     z-index: 10;
 }
-
-
-/* ===========================
-   MAIN CONTENT AREA
-   =========================== */
 
 .main {
     flex: 1;
@@ -281,16 +132,10 @@ body.page-home .header {
     padding: 2rem 1.5rem 4rem;
 }
 
-/* Narrower main for submit page */
 body.page-submit .main {
     max-width: 650px;
     padding-top: 3rem;
 }
-
-
-/* ===========================
-   HERO (Home page)
-   =========================== */
 
 .hero {
     text-align: center;
@@ -317,11 +162,6 @@ body.page-submit .main {
     max-width: 500px;
     margin: 0 auto;
 }
-
-
-/* ===========================
-   LETTER CARD
-   =========================== */
 
 .letter-section {
     max-width: 600px;
@@ -369,37 +209,12 @@ body.page-submit .main {
     z-index: 1;
 }
 
-.letter-text::before {
-    content: '\00AB';
-    color: var(--accent);
-    opacity: 0.4;
-    font-size: 2rem;
-    position: relative;
-    top: 0.15em;
-    margin-right: 0.1em;
-}
-
-.letter-text::after {
-    content: '\00BB';
-    color: var(--accent);
-    opacity: 0.4;
-    font-size: 2rem;
-    position: relative;
-    top: 0.15em;
-    margin-left: 0.1em;
-}
-
 .placeholder-text {
     color: var(--text-secondary);
     font-style: normal;
     font-family: var(--font-sans);
     font-size: 1.05rem;
 }
-
-
-/* ===========================
-   BUTTONS
-   =========================== */
 
 .button-group {
     display: flex;
@@ -475,11 +290,6 @@ body.page-submit .main {
     display: none !important;
 }
 
-
-/* ===========================
-   STATS BLOCK
-   =========================== */
-
 .stats-row {
     display: flex;
     gap: 2rem;
@@ -512,11 +322,6 @@ body.page-submit .main {
     margin-top: 0.25rem;
 }
 
-
-/* ===========================
-   ABOUT SECTION
-   =========================== */
-
 .about {
     max-width: 650px;
     margin: 4rem auto;
@@ -539,12 +344,6 @@ body.page-submit .main {
     margin-bottom: 0.75rem;
 }
 
-
-/* ===========================
-   SUBMIT PAGE
-   =========================== */
-
-/* Page title */
 .page-title {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -567,7 +366,6 @@ body.page-submit .main {
     margin: 0 auto;
 }
 
-/* Guidelines */
 .guidelines {
     background: var(--accent-light);
     border: 1px solid #d6e6e8;
@@ -599,7 +397,6 @@ body.page-submit .main {
     opacity: 0.6;
 }
 
-/* Form card */
 .form-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -670,7 +467,6 @@ body.page-submit .main {
     margin-bottom: 1.5rem;
 }
 
-/* Success state */
 .success-card {
     text-align: center;
     padding: 3rem 2rem;
@@ -709,11 +505,6 @@ body.page-submit .main {
 .back-link:hover {
     color: var(--accent);
 }
-
-
-/* ===========================
-   MODERATION PAGE
-   =========================== */
 
 .moderation-wrapper {
     max-width: 700px;
@@ -808,11 +599,6 @@ body.page-submit .main {
     margin-bottom: 1rem;
 }
 
-
-/* ===========================
-   FOOTER
-   =========================== */
-
 .footer {
     background: var(--surface);
     border-top: 1px solid var(--border);
@@ -844,97 +630,6 @@ body.page-submit .main {
     opacity: 0.7;
 }
 
-
-/* ===========================
-   ANIMATIONS
-   =========================== */
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.letter-card.reveal {
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-
-/* ===========================
-   RESPONSIVE
-   =========================== */
-
-@media (max-width: 640px) {
-    .header-inner {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .nav {
-        gap: 1rem;
-    }
-
-    .hero {
-        padding: 1.5rem 0 1rem;
-    }
-
-    .letter-card {
-        padding: 1.8rem 1.2rem;
-        min-height: 180px;
-    }
-
-    .letter-text {
-        font-size: 1.15rem;
-    }
-
-    .button-group {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .button-group .btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-
-    .stats-row {
-        gap: 1rem;
-    }
-
-    .stat-card {
-        min-width: 130px;
-        padding: 1.2rem 1.5rem;
-    }
-
-    .stat-number {
-        font-size: 1.8rem;
-    }
-
-    .form-card {
-        padding: 1.5rem 1.2rem;
-    }
-
-    .guidelines {
-        padding: 1.2rem 1.4rem;
-    }
-
-    .form-group textarea {
-        height: 180px;
-        font-size: 1rem;
-    }
-}
-
-/* ===========================
-   CAPTCHA INPUT
-   =========================== */
-
 .form-group input[type="number"] {
     width: 100%;
     padding: 0.7rem 1rem;
@@ -950,10 +645,6 @@ body.page-submit .main {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(74, 124, 130, 0.1);
 }
-
-/* ===========================
-   MODAL
-   =========================== */
 
 .modal-overlay {
     position: fixed;
@@ -1024,7 +715,7 @@ body.page-submit .main {
 .modal-actions {
     display: flex;
     gap: 0.75rem;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 @keyframes fadeIn {
@@ -1034,5 +725,228 @@ body.page-submit .main {
 
     to {
         opacity: 1;
+    }
+}
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 14px rgba(74, 124, 130, 0.25);
+    transform: scale(1.05);
+}
+
+.theme-toggle:active {
+    transform: scale(0.93);
+}
+
+.theme-icon {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #e8a85c;
+    transition: all 0.45s ease;
+    box-shadow: 0 0 10px rgba(232, 168, 92, 0.5), 0 0 24px rgba(232, 168, 92, 0.2);
+}
+
+html.dark .theme-icon {
+    background: #d5d0c8;
+    box-shadow: 0 0 14px rgba(200, 195, 185, 0.6), 0 0 32px rgba(180, 175, 165, 0.25);
+}
+
+html.dark .theme-toggle:hover {
+    border-color: #8a857d;
+    box-shadow: 0 0 18px rgba(180, 170, 155, 0.4);
+}
+
+.theme-toggle.pressed .theme-icon {
+    transform: scale(0.6);
+    transition: all 0.2s ease;
+}
+
+html.dark .guidelines {
+    background: #1e2d2f;
+    border-color: #2a4044;
+}
+
+html.dark .form-group textarea {
+    background: #1a1a1a;
+    color: #e8e0d5;
+}
+
+html.dark .form-group textarea::placeholder {
+    color: #6b6054;
+}
+
+html.dark .error-message {
+    background: #3b1a1a;
+    border-color: #5c2a2a;
+    color: #f4b8b8;
+}
+
+html.dark .success-card h2 {
+    color: #6ba5ac;
+}
+
+html.dark .btn {
+    background: #262626;
+    color: #e8e0d5;
+    border-color: #3a3530;
+}
+
+html.dark .btn:hover {
+    background: #333;
+}
+
+html.dark .btn-primary {
+    background: #6ba5ac;
+    color: #1a1a1a;
+    border-color: #6ba5ac;
+}
+
+html.dark .btn-primary:hover {
+    background: #5a9198;
+}
+
+html.dark .btn-ghost {
+    background: transparent;
+}
+
+html.dark .btn-ghost:hover {
+    background: transparent;
+    color: #6ba5ac;
+}
+
+html.dark .btn-outline {
+    color: #6ba5ac !important;
+    border-color: #6ba5ac;
+}
+
+html.dark .btn-outline:hover {
+    background: #6ba5ac;
+    color: #1a1a1a !important;
+}
+
+html.dark .moderation-letter {
+    background: #262626;
+    border-color: #3a3530;
+}
+
+html.dark .moderation-stats {
+    background: #1e2d2f;
+}
+
+html.dark .modal-box {
+    background: #262626;
+}
+
+html.dark .modal-reasons label:hover {
+    background: #1e2d2f;
+}
+
+html.dark input[type="number"],
+html.dark input[type="password"] {
+    background: #1a1a1a;
+    color: #e8e0d5;
+    border-color: #3a3530;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.letter-card.reveal {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@media (max-width: 640px) {
+    .header-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav {
+        gap: 1rem;
+    }
+
+    .hero {
+        padding: 1.5rem 0 1rem;
+    }
+
+    .letter-card {
+        padding: 1.8rem 1.2rem;
+        min-height: 180px;
+    }
+
+    .letter-text {
+        font-size: 1.15rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-group .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    .stats-row {
+        gap: 1rem;
+    }
+
+    .stat-card {
+        min-width: 130px;
+        padding: 1.2rem 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .form-card {
+        padding: 1.5rem 1.2rem;
+    }
+
+    .guidelines {
+        padding: 1.2rem 1.4rem;
+    }
+
+    .form-group textarea {
+        height: 180px;
+        font-size: 1rem;
+    }
+
+    .header {
+        height: auto;
+        padding: 0.75rem 1rem;
+    }
+        
+    .header-inner {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

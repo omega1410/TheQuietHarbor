@@ -7,6 +7,14 @@
     <title>Тихая гавань | письма поддержки в трудную минуту</title>
     <meta name="description" content="Случайные анонимные письма поддержки. Прочитай одно — возможно, оно для тебя.">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (function () {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
 </head>
 
 <body class="page-home">
@@ -39,11 +47,11 @@
         <section class="letter-section">
             <div class="letter-card" id="letterCard">
                 <p class="placeholder-text" id="letterContent">
-                    Нажми на кнопку ниже, чтобы получить письмо.
+                    Ищу письмо для тебя...
                 </p>
             </div>
 
-            <div class="button-group" id="actionButtons" style="margin-top: 1.5rem;">
+            <div class="button-group hidden" id="actionButtons" style="margin-top: 1.5rem;">
                 <button class="btn btn-primary" id="getLetterBtn" onclick="fetchLetter()">
                     Прочитать письмо
                 </button>
@@ -83,13 +91,13 @@
         <section class="about">
             <h2>О проекте</h2>
             <p>
-                «Тихая гавань» — это место, где незнакомые люди дарят друг другу слова поддержки.
+                «Тихая гавань» - это место, где незнакомые люди дарят друг другу слова поддержки.
                 Здесь нет имён, профилей и оценок. Только искренние письма, которые могут
                 оказаться именно теми словами, которые тебе нужны сейчас.
             </p>
             <p>
-                Каждое письмо проходит ручную модерацию: мы следим, чтобы здесь было
-                безопасно и тепло. Если ты хочешь поддержать кого-то — напиши письмо сам.
+                Каждое письмо проходит ручную модерацию: я слежу, чтобы здесь было
+                безопасно и тепло. Если ты хочешь поддержать кого-то - напиши письмо сам.
             </p>
         </section>
 
@@ -102,218 +110,283 @@
                 Если тебе нужна профессиональная помощь, обратись в
                 <a href="https://psi.mchs.gov.ru/" target="_blank" rel="noopener">Центр экстренной психологической
                     помощи МЧС</a>
-                или на линию доверия: <strong>8-800-2000-122</strong>
+                или на линию доверия: <strong>+7 (495) 989-50-50</strong>
             </p>
             <p class="credit">
                 Проект вдохновлен замечательной инициативой
                 <a href="https://reasonstostay.org" target="_blank" rel="noopener">Reasons to Stay</a>.
                 Я благодарен создателям за эту светлую идею.
             </p>
+            <p class="credit" id="footerWhisper" style="font-style: italic;"></p>
         </div>
     </footer>
 
-        <script>
-            let currentLetterId = null;  // Храним id текущего письма
-            const letterCard = document.getElementById('letterCard');
-            const letterContent = document.getElementById('letterContent');
-            const actionButtons = document.getElementById('actionButtons');
-            const postReadButtons = document.getElementById('postReadButtons');
-            const getLetterBtn = document.getElementById('getLetterBtn');
-            const statApproved = document.getElementById('statApproved');
-            const statTotal = document.getElementById('statTotal');
-            const statHelpful = document.getElementById('statHelpful');
+    <script>
+        let currentLetterId = null;
+        const letterCard = document.getElementById('letterCard');
+        const letterContent = document.getElementById('letterContent');
+        const actionButtons = document.getElementById('actionButtons');
+        const postReadButtons = document.getElementById('postReadButtons');
+        const getLetterBtn = document.getElementById('getLetterBtn');
+        const statApproved = document.getElementById('statApproved');
+        const statTotal = document.getElementById('statTotal');
+        const statHelpful = document.getElementById('statHelpful');
 
-            // Загружаем статистику при открытии страницы
-            async function loadStats() {
-                try {
-                    const response = await fetch('/api/stats');
-                    const data = await response.json();
-                    statApproved.textContent = data.total_approved.toLocaleString('ru');
-                    statTotal.textContent = data.total_all.toLocaleString('ru');
-                    statHelpful.textContent = data.total_helpful.toLocaleString('ru');
-                } catch (error) {
-                    statApproved.textContent = '...';
-                    statTotal.textContent = '...';
-                    statHelpful.textContent = '...';
-                }
+        // ========== СТАТИСТИКА ==========
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                statApproved.textContent = data.total_approved.toLocaleString('ru');
+                statTotal.textContent = data.total_all.toLocaleString('ru');
+                statHelpful.textContent = data.total_helpful.toLocaleString('ru');
+            } catch (error) {
+                statApproved.textContent = '...';
+                statTotal.textContent = '...';
+                statHelpful.textContent = '...';
             }
+        }
 
-            async function fetchLetter() {
-                letterCard.classList.add('loading');
-                letterContent.textContent = 'Ищу письмо для тебя...';
-                letterContent.className = 'placeholder-text';
-                getLetterBtn.disabled = true;
+        // ========== ПИСЬМО ==========
 
-                try {
-                    const response = await fetch('/api/letter');
-                    if (!response.ok) throw new Error('Сервер не отвечает');
-                    const data = await response.json();
+        async function fetchLetter() {
+            letterCard.classList.add('loading');
+            letterContent.textContent = 'Ищу письмо для тебя...';
+            letterContent.className = 'placeholder-text';
+            getLetterBtn.disabled = true;
 
-                    // Сохраняем id письма для кнопки «Помогло»
-                    currentLetterId = data.id;
+            try {
+                const response = await fetch('/api/letter');
+                if (!response.ok) throw new Error('Сервер не отвечает');
+                const data = await response.json();
 
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                currentLetterId = data.id;
 
-                    letterContent.textContent = data.content;
-                    letterContent.className = 'letter-text';
-                    letterCard.classList.add('reveal');
+                await new Promise(resolve => setTimeout(resolve, 1200));
 
-                    actionButtons.classList.add('hidden');
-                    postReadButtons.classList.remove('hidden');
+                const signatures = [
+                    'Твой анонимный друг.',
+                    'Кто-то, кому не всё равно.',
+                    'Человек, который верит в тебя.',
+                    'Тот, кто прошёл через это.',
+                    'Незнакомец, желающий тебе добра.',
+                    'Голос из тишины.',
+                    'Кто-то рядом, даже если ты не видишь.',
+                    'Тот, кто держит кулачки за тебя.'
+                ];
+                const signature = signatures[Math.floor(Math.random() * signatures.length)];
 
-                    // Восстанавливаем кнопку «Помогло», если была нажата ранее
-                    const helpfulBtn = postReadButtons.querySelector('.btn-primary');
-                    if (helpfulBtn) {
-                        helpfulBtn.textContent = 'Это помогло';
-                        helpfulBtn.disabled = false;
-                    }
+                letterContent.innerHTML = '<span style="color: var(--accent); opacity: 0.5; font-size: 2rem; vertical-align: middle;">«</span>' + data.content + '<span style="color: var(--accent); opacity: 0.5; font-size: 2rem; vertical-align: middle;">»</span><br><br><em style="opacity: 0.6; font-size: 0.9rem;">— ' + signature + '</em>';
+                letterContent.className = 'letter-text';
+                letterCard.classList.add('reveal');
 
-                } catch (error) {
-                    letterContent.textContent = 'Что-то пошло не так. Попробуй ещё раз.';
-                    letterContent.className = 'placeholder-text';
-                } finally {
-                    letterCard.classList.remove('loading');
-                    getLetterBtn.disabled = false;
-                    setTimeout(() => letterCard.classList.remove('reveal'), 600);
-                }
-            }
-
-            async function markHelpful() {
-                if (!currentLetterId) return;
-
-                try {
-                    await fetch('/api/feedback', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: currentLetterId }),
-                    });
-                } catch (error) {
-                    // Тихо, не нарушаем UX
-                }
+                actionButtons.classList.add('hidden');
+                postReadButtons.classList.remove('hidden');
 
                 const helpfulBtn = postReadButtons.querySelector('.btn-primary');
-                helpfulBtn.textContent = 'Спасибо!';
-                helpfulBtn.disabled = true;
-                setTimeout(() => {
+                if (helpfulBtn) {
                     helpfulBtn.textContent = 'Это помогло';
                     helpfulBtn.disabled = false;
-                }, 2000);
-            }
-
-                    function reportLetter() {
-                            if (!currentLetterId) return;
-                            showReportModal();
-                        }
-
-                        function showReportModal() {
-                            // Убираем старое модальное окно, если есть
-                            const existing = document.querySelector('.modal-overlay');
-                            if (existing) existing.remove();
-
-                            const overlay = document.createElement('div');
-                            overlay.className = 'modal-overlay';
-                            overlay.innerHTML = `
-                <div class="modal-box">
-                    <h3>Почему ты хочешь пожаловаться?</h3>
-                    <p>Это поможет нам понять, что не так с этим письмом.</p>
-                    <div class="modal-reasons">
-                        <label>
-                            <input type="radio" name="reportReason" value="Оскорбительное содержание">
-                            Оскорбительное содержание
-                        </label>
-                        <label>
-                            <input type="radio" name="reportReason" value="Неуместный совет">
-                            Неуместный или вредный совет
-                        </label>
-                        <label>
-                            <input type="radio" name="reportReason" value="Спам или реклама">
-                            Спам или реклама
-                        </label>
-                        <label>
-                            <input type="radio" name="reportReason" value="Разжигание ненависти">
-                            Разжигание ненависти
-                        </label>
-                        <label>
-                            <input type="radio" name="reportReason" value="Другое">
-                            Другое
-                        </label>
-                    </div>
-                    <div class="modal-actions">
-                        <button class="btn btn-ghost" onclick="closeReportModal()">Отмена</button>
-                        <button class="btn btn-primary" onclick="submitReport()">Отправить</button>
-                    </div>
-                </div>
-            `;
-                            document.body.appendChild(overlay);
-
-                            // Закрытие по клику на оверлей
-                            overlay.addEventListener('click', function (e) {
-                                if (e.target === overlay) closeReportModal();
-                            });
-                        }
-
-                        function closeReportModal() {
-                            const overlay = document.querySelector('.modal-overlay');
-                            if (overlay) overlay.remove();
-                        }
-
-                        async function submitReport() {
-                            const selected = document.querySelector('input[name="reportReason"]:checked');
-                            if (!selected) {
-                                alert('Пожалуйста, выбери причину жалобы.');
-                                return;
-                            }
-
-                            const reason = selected.value;
-
-                            try {
-                                await fetch('/api/report', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ id: currentLetterId, reason: reason }),
-                                });
-                            } catch (error) {
-                                // Тихо
-                            }
-
-                            closeReportModal();
-
-                            // Показываем подтверждение
-                            const reportBtn = postReadButtons.querySelector('button[onclick="reportLetter()"]');
-                            if (reportBtn) {
-                                reportBtn.textContent = 'Жалоба отправлена';
-                                reportBtn.disabled = true;
-                                setTimeout(() => {
-                                    reportBtn.textContent = 'Пожаловаться';
-                                    reportBtn.disabled = false;
-                                }, 2500);
-                            }
-                        }
-
-            // Инициализация
-            loadStats();
-
-                    // Переключение темы
-            function toggleTheme() {
-                const body = document.body;
-                const btn = document.getElementById('themeToggle');
-
-                // Анимация клика
-                btn.classList.add('pressed');
-                setTimeout(() => btn.classList.remove('pressed'), 400);
-
-                body.classList.toggle('dark');
-                const isDark = body.classList.contains('dark');
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            }
-
-            (function () {
-                const saved = localStorage.getItem('theme');
-                if (saved === 'dark') {
-                    document.body.classList.add('dark');
                 }
-            })();
-        </script>
+
+            } catch (error) {
+                letterContent.textContent = 'Что-то пошло не так. Попробуй ещё раз.';
+                letterContent.className = 'placeholder-text';
+            } finally {
+                letterCard.classList.remove('loading');
+                getLetterBtn.disabled = false;
+                setTimeout(() => letterCard.classList.remove('reveal'), 600);
+            }
+        }
+
+
+        async function markHelpful() {
+            if (!currentLetterId) return;
+
+            try {
+                await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: currentLetterId }),
+                });
+            } catch (error) {
+            }
+
+            const helpfulBtn = postReadButtons.querySelector('.btn-primary');
+            helpfulBtn.textContent = 'Спасибо!';
+            helpfulBtn.disabled = true;
+            setTimeout(() => {
+                helpfulBtn.textContent = 'Это помогло';
+                helpfulBtn.disabled = false;
+            }, 2000);
+        }
+
+        // ========== ЖАЛОБА ==========
+
+        function reportLetter() {
+            if (!currentLetterId) return;
+            showReportModal();
+        }
+
+        function showReportModal() {
+            const existing = document.querySelector('.modal-overlay');
+            if (existing) existing.remove();
+
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.innerHTML = `
+                    <div class="modal-box">
+                        <h3>Почему ты хочешь пожаловаться?</h3>
+                        <p>Это поможет нам понять, что не так с этим письмом.</p>
+                        <div class="modal-reasons">
+                            <label>
+                                <input type="radio" name="reportReason" value="Оскорбительное содержание" onchange="toggleCustomReason()">
+                                Оскорбительное содержание
+                            </label>
+                            <label>
+                                <input type="radio" name="reportReason" value="Неуместный совет" onchange="toggleCustomReason()">
+                                Неуместный или вредный совет
+                            </label>
+                            <label>
+                                <input type="radio" name="reportReason" value="Спам или реклама" onchange="toggleCustomReason()">
+                                Спам или реклама
+                            </label>
+                            <label>
+                                <input type="radio" name="reportReason" value="Разжигание ненависти" onchange="toggleCustomReason()">
+                                Разжигание ненависти
+                            </label>
+                            <label>
+                                <input type="radio" name="reportReason" value="Другое" onchange="toggleCustomReason()">
+                                Другое
+                            </label>
+                        </div>
+                        <div class="form-group hidden" id="customReasonGroup" style="margin-top: 0.5rem;">
+                            <label for="customReason">Опиши, что именно не так:</label>
+                            <textarea id="customReason" placeholder="Напиши здесь..." style="
+                                width: 100%;
+                                height: 80px;
+                                padding: 0.7rem 1rem;
+                                border: 1.5px solid var(--border);
+                                border-radius: 10px;
+                                font-family: var(--font-sans);
+                                font-size: 0.95rem;
+                                resize: vertical;
+                                outline: none;
+                            "></textarea>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn btn-ghost" onclick="closeReportModal()">Отмена</button>
+                            <button class="btn btn-primary" onclick="submitReport()">Отправить</button>
+                        </div>
+                    </div>
+                `;
+            document.body.appendChild(overlay);
+
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) closeReportModal();
+            });
+        }
+
+        function toggleCustomReason() {
+            const selected = document.querySelector('input[name="reportReason"]:checked');
+            const customGroup = document.getElementById('customReasonGroup');
+            if (selected && selected.value === 'Другое') {
+                customGroup.classList.remove('hidden');
+            } else {
+                customGroup.classList.add('hidden');
+            }
+        }
+
+        function closeReportModal() {
+            const overlay = document.querySelector('.modal-overlay');
+            if (overlay) overlay.remove();
+        }
+
+        async function submitReport() {
+            const selected = document.querySelector('input[name="reportReason"]:checked');
+            if (!selected) {
+                alert('Пожалуйста, выбери причину жалобы.');
+                return;
+            }
+
+            let reason = selected.value;
+
+            if (reason === 'Другое') {
+                const customText = document.getElementById('customReason').value.trim();
+                if (customText) {
+                    reason = 'Другое: ' + customText;
+                }
+            }
+
+            try {
+                await fetch('/api/report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: currentLetterId, reason: reason }),
+                });
+            } catch (error) {
+            }
+
+            closeReportModal();
+
+            const reportBtn = postReadButtons.querySelector('button[onclick="reportLetter()"]');
+            if (reportBtn) {
+                reportBtn.textContent = 'Жалоба отправлена';
+                reportBtn.disabled = true;
+                setTimeout(() => {
+                    reportBtn.textContent = 'Пожаловаться';
+                    reportBtn.disabled = false;
+                }, 2500);
+            }
+        }
+
+        // ========== ТЕМА ==========
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+
+            btn.classList.add('pressed');
+            setTimeout(() => btn.classList.remove('pressed'), 400);
+
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        (function () {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+
+        // ========== ФРАЗА В ФУТЕРЕ ==========
+
+        const whispers = [
+            'Ты справишься.',
+            'Ты не один.',
+            'Это пройдёт.',
+            'Ты уже молодец, что ты здесь.',
+            'Дыши. Всё будет хорошо.',
+            'Твоя история ещё пишется.',
+            'Ты важен.',
+            'Этот день закончится, и наступит новый.',
+            'Ты сильнее, чем думаешь.',
+            'Сейчас трудно, но это не навсегда.'
+        ];
+        const whisper = whispers[Math.floor(Math.random() * whispers.length)];
+        const whisperEl = document.getElementById('footerWhisper');
+        if (whisperEl) {
+            whisperEl.textContent = '— ' + whisper;
+        }
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+
+        loadStats();
+        fetchLetter();
+    </script>
 </body>
 
 </html>
