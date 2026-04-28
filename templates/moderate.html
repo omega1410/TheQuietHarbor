@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модерация — Тихая гавань</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="moderation-wrapper">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Модерация писем</h1>
+            <a href="/logout" class="btn btn-ghost" style="font-size: 0.9rem;">Выйти</a>
+        </div>
+        <div class="moderation-stats">
+            Одобрено: <strong>{{ approved_count }}</strong>
+            &nbsp;|&nbsp; На проверке: <strong>{{ pending_count }}</strong>
+            &nbsp;|&nbsp; Жалоб: <strong>{{ flagged_count }}</strong>
+        </div>
+
+        {% if pending_letters %}
+        <h2>Новые письма</h2>
+        {% for letter in pending_letters %}
+        <div class="moderation-letter">
+            <p>{{ letter.content }}</p>
+            <small>Отправлено: {{ letter.created_at }}</small>
+            <div class="moderation-actions">
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="id" value="{{ letter.id }}">
+                    <button type="submit" name="action" value="approve" class="btn-approve">Одобрить</button>
+                    <button type="submit" name="action" value="reject" class="btn-reject">Отклонить</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="moderation-empty">Новых писем для проверки нет.</div>
+        {% endif %}
+
+        {% if flagged_letters %}
+        <h2 style="margin-top: 2.5rem; color: #c1665b;">Письма с жалобами</h2>
+        {% for letter in flagged_letters %}
+        <div class="moderation-letter" style="border-left: 4px solid #c1665b;">
+            <p>{{ letter.content }}</p>
+            <small>
+                Причина жалобы: <strong>{{ letter.report_reason }}</strong>
+                &nbsp;|&nbsp; Отправлено: {{ letter.created_at }}
+                &nbsp;|&nbsp; Помогло: {{ letter.helpful_count }} раз
+            </small>
+            <div class="moderation-actions">
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="id" value="{{ letter.id }}">
+                    <button type="submit" name="action" value="approve" class="btn-approve">Оставить</button>
+                    <button type="submit" name="action" value="reject" class="btn-reject">Удалить</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>
