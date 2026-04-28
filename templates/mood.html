@@ -92,7 +92,7 @@
 
             <div id="entriesList" style="text-align: left; max-width: 600px; margin: 2rem auto;"></div>
 
-            <button onclick="showForm()" class="btn">Новая запись</button>
+            <button onclick="showForm()" class="btn btn-primary">Новая запись</button>
         </div>
 
         <div id="moodSuccess" class="form-card success-card animate-in delay-1 hidden">
@@ -158,7 +158,8 @@
                 score: score,
                 reason: reason,
                 helped: helped,
-                date: new Date().toISOString().split('T')[0]
+                date: new Date().toISOString().split('T')[0],
+                id: Date.now()  // уникальный ID
             });
             saveMoods(moods);
 
@@ -193,7 +194,10 @@
                 html += '<div class="mood-entry">';
                 html += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
                 html += '<strong class="mood-score">' + m.score + '/10</strong>';
+                html += '<div>';
                 html += '<small class="mood-date">' + m.date + '</small>';
+                html += ' <button onclick="deleteMood(' + m.id + ')" class="btn-ghost" style="font-size: 0.75rem; opacity: 0.5; padding: 0.1rem 0.5rem; border-color: transparent; cursor: pointer;">Удалить</button>';
+                html += '</div>';
                 html += '</div>';
                 if (m.reason) html += '<p style="margin-bottom: 0.25rem;"><em>Что случилось:</em> ' + m.reason + '</p>';
                 if (m.helped) html += '<p><em>Что помогло:</em> ' + m.helped + '</p>';
@@ -204,6 +208,14 @@
             document.getElementById('moodForm').classList.add('hidden');
             document.getElementById('moodSuccess').classList.add('hidden');
             document.getElementById('moodStats').classList.remove('hidden');
+        }
+
+        function deleteMood(id) {
+            if (!confirm('Удалить эту запись?')) return;
+            let moods = getMoods();
+            moods = moods.filter(m => m.id !== id);
+            saveMoods(moods);
+            showStats();
         }
 
         const whispers = [
