@@ -7,6 +7,7 @@
     <title>Написать письмо — Тихая гавань</title>
     <meta name="description" content="Напиши анонимное письмо поддержки для незнакомого человека.">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script>
         (function () {
             const saved = localStorage.getItem('theme');
@@ -22,10 +23,14 @@
     <!-- ========== HEADER ========== -->
     <header class="header">
         <div class="header-inner">
-            <a href="/" class="logo">Тихая гавань <span>| письма поддержки</span></a>
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="" class="logo-icon">
+                    Тихая гавань <span>| письма поддержки</span>
+            </a>
             <nav class="nav">
                 <a href="/" class="btn-outline">Главная</a>
                 <a href="/submit">Написать письмо</a>
+                <a href="/mood">Дневник</a>
                 <button onclick="toggleTheme()" class="theme-toggle" title="Сменить тему" id="themeToggle"
                     aria-label="Переключить тему">
                     <span class="theme-icon"></span>
@@ -39,25 +44,25 @@
 
         {% if success %}
         <!-- Успешная отправка -->
-        <div class="form-card success-card">
+        <div class="form-card success-card animate-in delay-1">
             <h2>Спасибо за твоё письмо</h2>
             <p>
                 Оно отправлено на модерацию и скоро появится в «Тихой гавани».
                 Возможно, именно твои слова станут для кого-то спасительным берегом.
             </p>
-            <a href="/" class="btn">Вернуться на главную</a>
+            <a href="/" class="btn animate-in delay-2">Вернуться на главную</a>
         </div>
 
         {% else %}
         <!-- Форма -->
-        <div class="page-title">
+        <div class="page-title animate-in delay-1">
             <h1>Написать письмо</h1>
             <p>Твои слова могут стать для незнакомого человека тем самым маяком, который не даст потеряться в шторме.
             </p>
         </div>
 
         <!-- Правила -->
-        <div class="guidelines">
+        <div class="guidelines animate-in delay-2">
             <h2>Пожалуйста, помни:</h2>
             <ul>
                 <li>Пиши искренне и бережно — твоё письмо прочитает человек, которому сейчас трудно</li>
@@ -68,14 +73,14 @@
         </div>
 
         <!-- Форма отправки -->
-        <div class="form-card">
+        <div class="form-card animate-in delay-3">
             {% if error %}
             <div class="error-message">{{ error }}</div>
             {% endif %}
 
             <form method="POST" id="submitForm">
                 <div class="form-group">
-                    <label for="content">Текст письма</label>
+                    <label for="content" style="text-align: center;">Текст письма</label>
                     <textarea id="content" name="content" placeholder="Мне бы хотелось сказать тебе..." maxlength="1500"
                         oninput="updateCounter()">{{ request.form.get('content', '') }}</textarea>
                     <div class="char-counter" id="charCounter">0 / 1500</div>
@@ -83,18 +88,20 @@
 
                 <!-- Капча -->
                 <div class="form-group">
-                    <label for="captcha">
+                    <label for="captcha" style="text-align: center;">
                         Проверка: сколько будет {{ captcha_a }} + {{ captcha_b }}?
                     </label>
                     <input type="number" id="captcha" name="captcha_answer" required placeholder="Введи ответ">
                     <input type="hidden" name="captcha_sum" value="{{ captcha_a + captcha_b }}">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Отправить письмо</button>
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-primary">Отправить письмо</button>
+                </div>
             </form>
         </div>
 
-        <a href="/" class="back-link">Вернуться на главную</a>
+        <a href="/" class="back-link animate-in delay-4">Вернуться на главную</a>
         {% endif %}
 
     </main>
@@ -108,11 +115,27 @@
                     помощи МЧС</a>
                 или на линию доверия: <strong>8-800-2000-122</strong>
             </p>
-            <p class="credit">
-                Проект вдохновлен замечательной инициативой
-                <a href="https://reasonstostay.org" target="_blank" rel="noopener">Reasons to Stay</a>.
-                Я благодарен создателям за эту светлую идею.
+            <p class="credit" style="font-size: 0.8rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="/privacy">Политика конфиденциальности</a>
+                <a href="/accessibility">Доступность</a>
+                <a href="/thanks">Благодарности</a>
             </p>
+        <div class="footer-links">
+            <a href="https://t.me/eternaltears14" target="_blank" rel="noopener" class="footer-icon" title="Telegram">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.41-.88.03-.24.37-.49 1.02-.74 3.98-1.73 6.63-2.87 7.95-3.42 3.78-1.57 4.57-1.85 5.08-1.86.11 0 .37.03.54.16.14.11.18.26.2.41.02.15.04.48.02.66z" />
+                </svg>
+                    Telegram
+            </a>
+            <a href="mailto:omega14101@yandex.ru" class="footer-icon" title="Email">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                </svg>
+                    Почта
+            </a>
+        </div>
         </div>
     </footer>
 

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политика конфиденциальности — Тихая гавань</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script>
+        (function () {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+</head>
+
+<body class="page-submit">
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="" class="logo-icon">
+                Тихая гавань <span>| письма поддержки</span>
+            </a>
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/submit" class="btn-outline">Написать письмо</a>
+                <a href="/mood">Дневник</a>
+                <button onclick="toggleTheme()" class="theme-toggle" title="Сменить тему" id="themeToggle"
+                    aria-label="Переключить тему">
+                    <span class="theme-icon"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="animate-in delay-1" style="max-width: 650px; margin: 0 auto;">
+            <h1 style="text-align: center;">Политика конфиденциальности</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; text-align: center;">Последнее обновление: 30 апреля 2026 г.</p>
+
+            <div class="form-card" style="text-align: left; line-height: 1.8;">
+                <h2 style="font-size: 1.2rem; margin-bottom: 1rem;">1. Какие данные я собираю</h2>
+                <p>«Тихая гавань» не требует регистрации и не собирает личные данные пользователей. Я сознательно
+                    отказался от:</p>
+                <ul style="margin: 0.5rem 0 1rem 1.5rem; color: var(--text-secondary);">
+                    <li>Файлов cookie (кроме технической куки, которая хранится только в вашем браузере
+                        и не отправляется на сервер)</li>
+                    <li>Систем аналитики и отслеживания</li>
+                    <li>Сбора IP-адресов в логах</li>
+                    <li>Форм сбора email или имён</li>
+                </ul>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">2. Возрастные ограничения</h2>
+                <p>Сайт не предназначен для лиц младше 13 лет. Я сознательно не собираю никакую информацию о лицах
+                    младше 13 лет.</p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">3. Данные, собираемые автоматически</h2>
+                <p>Я не веду логи сервера, содержащие IP-адреса посетителей. Я не использую файлы cookie для отслеживания
+                    или рекламы.</p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">4. Данные, которые вы отправляете сами</h2>
+                <p><strong>При отправке письма:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.5rem; color: var(--text-secondary);">
+                    <li>Текст письма сохраняется в базе данных для публикации на сайте</li>
+                    <li>Письмо не содержит информации об авторе — оно полностью анонимно</li>
+                    <li>IP-адрес отправителя не сохраняется</li>
+                </ul>
+
+                <p><strong>При отправке жалобы:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.5rem; color: var(--text-secondary);">
+                    <li>Причина жалобы сохраняется для модерации</li>
+                    <li>Жалоба анонимна и не привязана к личности</li>
+                </ul>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">5. Дневник настроения</h2>
+                <p>Данные дневника настроения хранятся исключительно в браузере пользователя (localStorage) и никогда не
+                    передаются на сервер. Только вы имеете к ним доступ.</p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">6. Защита данных</h2>
+                <p>Сайт работает по защищённому протоколу HTTPS. Данные между вашим браузером и сервером передаются в
+                    зашифрованном виде.</p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">7. Сторонние сервисы</h2>
+                <p>«Тихая гавань» не использует рекламные сети, аналитические трекеры, социальные плагины или сторонние
+                    шрифты.</p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">8. Сторонние ссылки</h2>
+                <p>Сайт содержит ссылки на внешние ресурсы (Центр экстренной психологической помощи МЧС, оригинальный
+                    проект Reasons to Stay и иконку маяка). Я не несу ответственности за политику конфиденциальности и содержание
+                    этих сайтов.</p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">9. Использование материалов сайта</h2>
+                <p>Тексты писем, опубликованные на сайте, являются анонимными и не принадлежат конкретным авторам. Любое
+                    физическое лицо может свободно использовать тексты писем в личных, некоммерческих целях: сохранять,
+                    копировать, распечатывать, делиться с близкими.</p>
+                <p>Название «Тихая гавань» (thequietharbor.ru) не может быть использовано для создания производных
+                    проектов или введения в заблуждение относительно авторства без письменного согласия владельца сайта.
+                </p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">10. Изменения в политике</h2>
+                <p>Я могу обновлять эту политику конфиденциальности время от времени. Изменения вступают в силу с
+                    момента публикации на этой странице. Я не рассылаю уведомления об изменениях, так как не храним
+                    ваши контактные данные. Рекомендуем периодически проверять эту страницу.</p>
+
+                <h2 style="font-size: 1.2rem; margin: 1.5rem 0 1rem;">11. Контакты</h2>
+                <p>Если у вас есть вопросы о конфиденциальности, напишите на <a
+                        href="mailto:omega14101@yandex.ru">omega14101@yandex.ru</a>.</p>
+            </div>
+
+            <a href="/" class="back-link">Вернуться на главную</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>
+                Если тебе нужна профессиональная помощь, обратись в
+                <a href="https://psi.mchs.gov.ru/" target="_blank" rel="noopener">Центр экстренной психологической
+                    помощи МЧС</a>
+                или на линию доверия: <strong>+7 (495) 989-50-50</strong>
+            </p>
+            <p class="credit" style="font-size: 0.8rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="/privacy">Политика конфиденциальности</a>
+                <a href="/accessibility">Доступность</a>
+                <a href="/thanks">Благодарности</a>
+            </p>
+        <div class="footer-links">
+            <a href="https://t.me/eternaltears14" target="_blank" rel="noopener" class="footer-icon" title="Telegram">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.41-.88.03-.24.37-.49 1.02-.74 3.98-1.73 6.63-2.87 7.95-3.42 3.78-1.57 4.57-1.85 5.08-1.86.11 0 .37.03.54.16.14.11.18.26.2.41.02.15.04.48.02.66z" />
+                </svg>
+                    Telegram
+            </a>
+            <a href="mailto:omega14101@yandex.ru" class="footer-icon" title="Email">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                </svg>
+                    Почта
+            </a>
+        </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+            btn.classList.add('pressed');
+            setTimeout(() => btn.classList.remove('pressed'), 400);
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        const whispers = [
+            'Ты справишься.',
+            'Ты не один.',
+            'Это пройдёт.',
+            'Ты уже молодец, что ты здесь.',
+            'Дыши. Всё будет хорошо.',
+            'Твоя история ещё пишется.',
+            'Ты важен.',
+            'Этот день закончится, и наступит новый.',
+            'Ты сильнее, чем думаешь.',
+            'Сейчас трудно, но это не навсегда.'
+        ];
+        const whisper = whispers[Math.floor(Math.random() * whispers.length)];
+        document.getElementById('footerWhisper').textContent = '— ' + whisper;
+    </script>
+</body>
+
+</html>

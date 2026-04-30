@@ -47,6 +47,31 @@ body {
     flex-direction: column;
     line-height: 1.7;
     background-image: radial-gradient(ellipse at 50% 0%, rgba(74, 124, 130, 0.04) 0%, transparent 60%);
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+.header,
+.footer,
+.letter-card,
+.stat-card,
+.form-card,
+.guidelines,
+.modal-box,
+.btn,
+.nav a,
+.logo,
+.about,
+.hero h1,
+.hero p,
+.moderation-letter,
+.moderation-stats {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.letter-card,
+.letter-card::before,
+.letter-text,
+.placeholder-text {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, opacity 0.5s ease;
 }
 
 .header {
@@ -84,6 +109,15 @@ body {
 .logo span {
     color: var(--text-secondary);
     font-weight: normal;
+}
+
+.logo-icon {
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+    margin-right: 0.3rem;
+    position: relative;
+    top: -3px;
 }
 
 .nav {
@@ -179,9 +213,10 @@ body.page-submit .main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: opacity 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, opacity 0.3s ease, transform 0.2s ease;
     position: relative;
     overflow: hidden;
+    flex-direction: column;
 }
 
 .letter-card::before {
@@ -207,6 +242,7 @@ body.page-submit .main {
     line-height: 1.8;
     position: relative;
     z-index: 1;
+    transition: color 0.5s ease;
 }
 
 .placeholder-text {
@@ -259,6 +295,7 @@ body.page-submit .main {
     border-color: var(--accent);
     font-weight: 600;
     letter-spacing: 0.01em;
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .btn-primary:hover {
@@ -269,16 +306,18 @@ body.page-submit .main {
 
 .btn-ghost {
     background: transparent;
-    border-color: transparent;
+    border-color: var(--border);
     color: var(--text-secondary);
     box-shadow: none;
+    opacity: 0.6;
 }
 
 .btn-ghost:hover {
     background: transparent;
-    border-color: transparent;
+    border-color: var(--accent);
     color: var(--accent);
     box-shadow: none;
+    opacity: 1;
 }
 
 .btn-full {
@@ -292,7 +331,7 @@ body.page-submit .main {
 
 .stats-row {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     justify-content: center;
     flex-wrap: wrap;
     margin: 3rem 0;
@@ -302,9 +341,10 @@ body.page-submit .main {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 1.5rem 2rem;
+    padding: 1.5rem 1.5rem;
     text-align: center;
-    min-width: 160px;
+    width: 200px;
+    flex-shrink: 0;
     box-shadow: var(--shadow-sm);
 }
 
@@ -881,72 +921,215 @@ html.dark input[type="password"] {
 }
 
 @media (max-width: 640px) {
+    .header {
+        height: auto;
+        min-height: 50px;
+        padding: 0.5rem 0.8rem;
+    }
+
     .header-inner {
-        flex-direction: column;
-        text-align: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    .logo-icon {
+        width: 18px;
+        height: 18px;
     }
 
     .nav {
-        gap: 1rem;
+        gap: 0.6rem;
     }
 
+    .nav a {
+        font-size: 0.85rem;
+    }
+
+    .btn-outline {
+        padding: 0.35rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .theme-toggle {
+        width: 34px;
+        height: 34px;
+    }
+
+    .theme-icon {
+        width: 15px;
+        height: 15px;
+    }
+
+    /* Hero */
     .hero {
-        padding: 1.5rem 0 1rem;
+        padding: 1.2rem 0 0.8rem;
     }
 
+    .hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    /* Письмо */
     .letter-card {
-        padding: 1.8rem 1.2rem;
-        min-height: 180px;
+        padding: 1.5rem 1rem;
+        min-height: 160px;
     }
 
     .letter-text {
-        font-size: 1.15rem;
+        font-size: 1rem;
     }
 
+    /* Кнопки */
     .button-group {
         flex-direction: column;
         align-items: center;
+        gap: 0.6rem;
     }
 
     .button-group .btn {
         width: 100%;
-        max-width: 300px;
+        max-width: 280px;
+        padding: 0.7rem 1.5rem;
+        text-align: center;
         justify-content: center;
     }
 
+    /* Статистика */
     .stats-row {
-        gap: 1rem;
+        gap: 0.8rem;
     }
 
     .stat-card {
-        min-width: 130px;
-        padding: 1.2rem 1.5rem;
+        min-width: 100px;
+        padding: 1rem;
     }
 
     .stat-number {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
-    .form-card {
-        padding: 1.5rem 1.2rem;
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    /* О проекте */
+    .about h2 {
+        font-size: 1.2rem;
+    }
+
+    .about p {
+        font-size: 0.85rem;
+    }
+
+    /* Футер */
+    .footer {
+        padding: 1.2rem 0.8rem;
+        font-size: 0.75rem;
+    }
+
+    /* Страница отправки */
+    .page-title h1 {
+        font-size: 1.4rem;
+    }
+
+    .page-title p {
+        font-size: 0.9rem;
     }
 
     .guidelines {
-        padding: 1.2rem 1.4rem;
+        padding: 1rem;
     }
 
-    .form-group textarea {
-        height: 180px;
+    .guidelines h2 {
         font-size: 1rem;
     }
 
-    .header {
-        height: auto;
-        padding: 0.75rem 1rem;
+    .guidelines ul li {
+        font-size: 0.8rem;
     }
-        
-    .header-inner {
-        flex-wrap: wrap;
-        justify-content: center;
+
+    .form-card {
+        padding: 1.2rem 1rem;
     }
+
+    .form-group textarea {
+        height: 150px;
+        font-size: 0.9rem;
+    }
+
+    .form-group label {
+        font-size: 0.85rem;
+    }
+}
+
+.animate-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.5s; }
+.delay-4 { animation-delay: 0.7s; }
+
+.mood-entry {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.mood-entry,
+.mood-entry * {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.mood-score {
+    color: var(--accent);
+    font-size: 1.2rem;
+    transition: color 0.5s ease;
+}
+
+.mood-date {
+    color: var(--text-secondary);
+    transition: color 0.5s ease;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.footer-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s;
+}
+
+.footer-icon:hover {
+    color: var(--accent);
+}
+
+.footer-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
 }

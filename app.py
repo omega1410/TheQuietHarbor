@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 load_dotenv()
 
@@ -38,8 +39,7 @@ def init_db():
     conn = get_db()
     cursor = conn.cursor()
 
-    cursor.execute(
-        """
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS letters (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             content TEXT NOT NULL,
@@ -47,8 +47,17 @@ def init_db():
             helpful_count INTEGER NOT NULL DEFAULT 0,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
-    """
-    )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS mood_entries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            score INTEGER NOT NULL,
+            reason TEXT DEFAULT '',
+            helped TEXT DEFAULT '',
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
 
     try:
         cursor.execute("ALTER TABLE letters ADD COLUMN needs_review INTEGER DEFAULT 0")
@@ -91,7 +100,7 @@ def get_letter():
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT id, content FROM letters WHERE status = ? ORDER BY RANDOM() LIMIT 1",
+        "SELECT id, content, helpful_count FROM letters WHERE status = ? ORDER BY RANDOM() LIMIT 1",
         ("approved",),
     )
     row = cursor.fetchone()
@@ -99,10 +108,20 @@ def get_letter():
 
     if row is None:
         return jsonify(
-            {"id": None, "content": "Пока нет одобренных писем. Загляни позже."}
+            {
+                "id": None,
+                "content": "Пока нет одобренных писем. Загляни позже.",
+                "helpful_count": 0,
+            }
         )
 
-    return jsonify({"id": row["id"], "content": row["content"]})
+    return jsonify(
+        {
+            "id": row["id"],
+            "content": row["content"],
+            "helpful_count": row["helpful_count"],
+        }
+    )
 
 
 @app.route("/api/feedback", methods=["POST"])
@@ -349,6 +368,71 @@ def get_stats():
             "total_helpful": total_helpful,
         }
     )
+
+
+@app.route("/robots.txt")
+def robots():
+    return (
+        """User-agent: *
+Allow: /
+Sitemap: https://thequietharbor.ru/sitemap.xml
+""",
+        200,
+        {"Content-Type": "text/plain"},
+    )
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    pages = [
+        {"loc": "https://thequietharbor.ru/", "priority": "1.0"},
+        {"loc": "https://thequietharbor.ru/submit", "priority": "0.8"},
+    ]
+
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for page in pages:
+        xml += "  <url>\n"
+        xml += f'    <loc>{page["loc"]}</loc>\n'
+        xml += f'    <priority>{page["priority"]}</priority>\n'
+        xml += "  </url>\n"
+    xml += "</urlset>"
+
+    return xml, 200, {"Content-Type": "application/xml"}
+
+
+@app.route("/mood")
+def mood():
+    return render_template("mood.html")
+
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+
+@app.route("/accessibility")
+def accessibility():
+    return render_template("accessibility.html")
+
+
+@app.route("/thanks")
+def thanks():
+    return render_template("thanks.html")
+
+
+LOVE_PASSWORD = os.getenv("LOVE_PASSWORD", "цветы2026")
+
+
+@app.route("/love", methods=["GET", "POST"])
+def love():
+    error = None
+    if request.method == "POST":
+        if request.form.get("password") == LOVE_PASSWORD:
+            return render_template("love.html", unlocked=True)
+        else:
+            error = "Неверный пароль"
+    return render_template("love.html", error=error)
 
 
 if __name__ == "__main__":
