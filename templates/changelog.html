@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История изменений — Тихая гавань</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script>
+        (function () {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+</head>
+
+<body class="page-submit">
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="" class="logo-icon">
+                Тихая гавань <span>| письма поддержки</span>
+            </a>
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/mood">Дневник</a>
+                <a href="/letters">Все письма</a>
+                <button onclick="toggleTheme()" class="theme-toggle" title="Сменить тему" id="themeToggle"
+                    aria-label="Переключить тему">
+                    <span class="theme-icon"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="animate-in delay-1" style="max-width: 650px; margin: 0 auto; padding: 0 1rem;">
+            <h1 style="text-align: center;">Что нового</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; text-align: center;">История изменений сайта
+            </p>
+
+            <div class="form-card" style="text-align: left; line-height: 1.8;">
+
+                <!-- Новая запись — сверху -->
+                <div class="changelog-entry" style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--accent); margin-bottom: 0.25rem;">1 мая 2026</h3>
+                    <ul style="margin-left: 1.2rem; color: var(--text-secondary);">
+                        <li>Добавлена страница «Все письма» — лента поддержки с сортировкой по дате</li>
+                        <li>Блок «Написать письмо» перенесён на главную страницу</li>
+                        <li>Улучшена мобильная навигация</li>
+                        <li>Мелкие исправления интерфейса</li>
+                    </ul>
+                </div>
+                <div class="changelog-entry" style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--accent); margin-bottom: 0.25rem;">30 апреля 2026</h3>
+                    <ul style="margin-left: 1.2rem; color: var(--text-secondary);">
+                        <li>Добавлена страница «Что нового» (история изменений сайта)</li>
+                        <li>Политика конфиденциальности, доступность, благодарности</li>
+                        <li>Иконки Telegram и почты в футере</li>
+                        <li>Улучшены ссылки в тёмной теме</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry" style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--accent); margin-bottom: 0.25rem;">28 апреля 2026</h3>
+                    <ul style="margin-left: 1.2rem; color: var(--text-secondary);">
+                        <li>Дневник настроения — приватный, данные хранятся локально</li>
+                        <li>Кнопка копирования текста письма</li>
+                        <li>Счётчик благодарностей у каждого письма</li>
+                        <li>Удаление записей в дневнике</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry" style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--accent); margin-bottom: 0.25rem;">27 апреля 2026</h3>
+                    <ul style="margin-left: 1.2rem; color: var(--text-secondary);">
+                        <li>Сайт запущен: письма поддержки, отправка, модерация</li>
+                        <li>Тёмная тема с плавным переходом</li>
+                        <li>Жалобы на письма с указанием причины</li>
+                        <li>Добавлен SSL-сертификат </li>
+                        <li>Подтверждение в Google и Яндексе</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <a href="/" class="back-link">Вернуться на главную</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>
+                Если тебе нужна профессиональная помощь, обратись в
+                <a href="https://psi.mchs.gov.ru/" target="_blank" rel="noopener">Центр экстренной психологической
+                    помощи МЧС</a>
+                или на линию доверия: <strong>+7 (495) 989-50-50</strong>
+            </p>
+            <p class="credit" id="footerWhisper" style="font-style: italic;"></p>
+            <p class="credit"
+                style="font-size: 0.8rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;">
+                <a href="/privacy">Политика</a>
+                <a href="/accessibility">Доступность</a>
+                <a href="/thanks">Благодарности</a>
+                <a href="/changelog">История изменений</a>
+            </p>
+            <div class="footer-links">
+                <a href="https://t.me/eternaltears14" target="_blank" rel="noopener" class="footer-icon" title="Telegram">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.41-.88.03-.24.37-.49 1.02-.74 3.98-1.73 6.63-2.87 7.95-3.42 3.78-1.57 4.57-1.85 5.08-1.86.11 0 .37.03.54.16.14.11.18.26.2.41.02.15.04.48.02.66z" />
+                    </svg>
+                    Telegram
+                </a>
+                <a href="mailto:omega14101@yandex.ru" class="footer-icon" title="Email">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                    Почта
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+            btn.classList.add('pressed');
+            setTimeout(() => btn.classList.remove('pressed'), 400);
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        const whispers = [
+            'Ты справишься.',
+            'Ты не один.',
+            'Это пройдёт.',
+            'Ты уже молодец, что ты здесь.',
+            'Дыши. Всё будет хорошо.',
+            'Твоя история ещё пишется.',
+            'Ты важен.',
+            'Этот день закончится, и наступит новый.',
+            'Ты сильнее, чем думаешь.',
+            'Сейчас трудно, но это не навсегда.'
+        ];
+        const whisper = whispers[Math.floor(Math.random() * whispers.length)];
+        const whisperEl = document.getElementById('footerWhisper');
+        if (whisperEl) {
+            whisperEl.textContent = '— ' + whisper;
+        }
+    </script>
+</body>
+
+</html>

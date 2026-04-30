@@ -421,6 +421,42 @@ def thanks():
     return render_template("thanks.html")
 
 
+@app.route("/changelog")
+def changelog():
+    return render_template("changelog.html")
+
+
+@app.route("/letters")
+def letters():
+    return render_template("letters.html")
+
+
+@app.route("/api/letters")
+def api_letters():
+    offset = request.args.get("offset", 0, type=int)
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id, content, helpful_count, created_at FROM letters WHERE status = ? ORDER BY created_at DESC LIMIT 10 OFFSET ?",
+        ("approved", offset),
+    )
+    rows = cursor.fetchall()
+    conn.close()
+
+    letters_list = []
+    for row in rows:
+        letters_list.append(
+            {
+                "id": row["id"],
+                "content": row["content"],
+                "helpful_count": row["helpful_count"],
+                "created_at": row["created_at"],
+            }
+        )
+
+    return jsonify(letters_list)
+
+
 LOVE_PASSWORD = os.getenv("LOVE_PASSWORD", "цветы2026")
 
 
