@@ -159,9 +159,7 @@
     <div class="container">
         {% if unlocked %}
         <h1>Прослушай одна</h1>
-        <audio controls>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-            Твой браузер не поддерживает аудио.
+        <audio controls src="{{ url_for('static', filename='audio/message.mp3') }}"></audio>
         </audio>
         {% else %}
         <h1>Введи пароль</h1>
