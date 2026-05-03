@@ -1,7 +1,9 @@
 import os
 import random
 import sqlite3
+import requests
 from datetime import datetime
+import re
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
@@ -14,6 +16,8 @@ load_dotenv()
 DATABASE = "database.db"
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin")
 app.secret_key = os.getenv("SECRET_KEY", "запасной-секретный-ключ")
+SMARTCAPTCHA_SITE_KEY = os.getenv("SMARTCAPTCHA_SITE_KEY", "")
+SMARTCAPTCHA_SERVER_KEY = os.getenv("SMARTCAPTCHA_SERVER_KEY", "")
 
 SEED_LETTERS = [
     "Ты не один. Даже если кажется, что весь мир отвернулся, где-то есть человек, которому ты важен.",
@@ -85,6 +89,25 @@ def init_db():
     print("[DB] База данных готова к работе.")
 
 
+def verify_smartcaptcha(token):
+    if not token or not SMARTCAPTCHA_SERVER_KEY:
+        return False
+    try:
+        resp = requests.get(
+            "https://smartcaptcha.yandexcloud.net/validate",
+            params={
+                "secret": SMARTCAPTCHA_SERVER_KEY,
+                "token": token,
+                "ip": request.remote_addr,
+            },
+            timeout=5,
+        )
+        data = resp.json()
+        return data.get("status") == "ok"
+    except Exception:
+        return False
+
+
 with app.app_context():
     init_db()
 
@@ -149,6 +172,7 @@ def report_letter():
     data = request.get_json()
     letter_id = data.get("id")
     reason = data.get("reason", "не указана")
+    reason = re.sub(r"<[^>]*>", "", reason)
 
     if letter_id is None:
         return jsonify({"status": "error", "message": "Не указан id письма"}), 400
@@ -171,45 +195,34 @@ def report_letter():
 def submit():
     if request.method == "POST":
         content = request.form.get("content", "").strip()
-        captcha_answer = request.form.get("captcha_answer", "")
-        captcha_sum = request.form.get("captcha_sum", "")
+        content = re.sub(r"<[^>]*>", "", content)
 
         if not content:
             return render_template(
                 "submit.html",
                 error="Поле не может быть пустым. Напиши хотя бы пару слов.",
-                captcha_a=random.randint(1, 10),
-                captcha_b=random.randint(1, 10),
+                site_key=SMARTCAPTCHA_SITE_KEY,
             )
         if len(content) < 10:
             return render_template(
                 "submit.html",
                 error="Письмо слишком короткое. Пожалуйста, напиши чуть больше — хотя бы 10 символов.",
-                captcha_a=random.randint(1, 10),
-                captcha_b=random.randint(1, 10),
+                site_key=SMARTCAPTCHA_SITE_KEY,
             )
         if len(content) > 1500:
             return render_template(
                 "submit.html",
                 error="Письмо слишком длинное. Максимум 1500 символов.",
-                captcha_a=random.randint(1, 10),
-                captcha_b=random.randint(1, 10),
+                site_key=SMARTCAPTCHA_SITE_KEY,
             )
 
-        try:
-            if int(captcha_answer) != int(captcha_sum):
-                return render_template(
-                    "submit.html",
-                    error="Неверный ответ на проверочный вопрос. Попробуй ещё раз.",
-                    captcha_a=random.randint(1, 10),
-                    captcha_b=random.randint(1, 10),
-                )
-        except (ValueError, TypeError):
+        # Проверка Яндекс SmartCaptcha
+        token = request.form.get("smart-token", "")
+        if not verify_smartcaptcha(token):
             return render_template(
                 "submit.html",
-                error="Пожалуйста, введи число.",
-                captcha_a=random.randint(1, 10),
-                captcha_b=random.randint(1, 10),
+                error="Не пройдена проверка капчи. Попробуй ещё раз.",
+                site_key=SMARTCAPTCHA_SITE_KEY,
             )
 
         conn = get_db()
@@ -222,9 +235,7 @@ def submit():
 
         return render_template("submit.html", success=True)
 
-    a = random.randint(1, 10)
-    b = random.randint(1, 10)
-    return render_template("submit.html", captcha_a=a, captcha_b=b)
+    return render_template("submit.html", site_key=SMARTCAPTCHA_SITE_KEY)
 
 
 @app.route("/moderate", methods=["GET", "POST"])
@@ -460,7 +471,7 @@ def api_letters():
 LOVE_PASSWORD = os.getenv("LOVE_PASSWORD", "цветы2026")
 
 
-@app.route("/love", methods=["GET", "POST"])
+@app.route("/farewell", methods=["GET", "POST"])
 def love():
     error = None
     if request.method == "POST":

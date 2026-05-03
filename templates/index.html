@@ -135,6 +135,9 @@
                 <a href="/thanks">Благодарности</a>
                 <a href="/changelog">История изменений</a>
             </p>
+
+            <p class="credit" id="footerWhisper" style="font-style: italic;"></p>
+
         <div class="footer-links">
             <a href="https://t.me/eternaltears14" target="_blank" rel="noopener" class="footer-icon" title="Telegram">
                 <svg viewBox="0 0 24 24">
@@ -198,6 +201,14 @@
                currentLetterId = data.id;
                currentLetterText = data.content;
 
+               // Экранируем HTML-теги в тексте письма
+               const safeContent = data.content
+                   .replace(/&/g, '&amp;')
+                   .replace(/</g, '&lt;')
+                   .replace(/>/g, '&gt;')
+                   .replace(/"/g, '&quot;')
+                   .replace(/'/g, '&#x27;');
+
                await new Promise(resolve => setTimeout(resolve, 1600));
 
                const signatures = [
@@ -216,7 +227,7 @@
                    ? '<br><span style="opacity: 0.5; font-size: 0.8rem;">Этому письму были благодарны ' + data.helpful_count + ' ' + pluralize(data.helpful_count) + '</span>' 
                    : '';
 
-               letterContent.innerHTML = '<span style="color: var(--accent); opacity: 0.5; font-size: 2rem; vertical-align: middle;">«</span>' + data.content + '<span style="color: var(--accent); opacity: 0.5; font-size: 2rem; vertical-align: middle;">»</span><br><br><em style="opacity: 0.6; font-size: 0.9rem;">— ' + signature + '</em>' + helpfulText;
+               letterContent.innerHTML = '<span style="color: var(--accent); opacity: 0.5; font-size: 2rem; vertical-align: middle;">«</span>' + safeContent + '<span style="color: var(--accent); opacity: 0.5; font-size: 2rem; vertical-align: middle;">»</span><br><br><em style="opacity: 0.6; font-size: 0.9rem;">— ' + signature + '</em>' + helpfulText;
                letterContent.className = 'letter-text';
                letterCard.classList.add('reveal');
 
@@ -430,23 +441,23 @@
 
        // ========== ФРАЗА В ФУТЕРЕ ==========
 
-       const whispers = [
-           'Ты справишься.',
-           'Ты не один.',
-           'Это пройдёт.',
-           'Ты уже молодец, что ты здесь.',
-           'Дыши. Всё будет хорошо.',
-           'Твоя история ещё пишется.',
-           'Ты важен.',
-           'Этот день закончится, и наступит новый.',
-           'Ты сильнее, чем думаешь.',
-           'Сейчас трудно, но это не навсегда.'
-       ];
-       const whisper = whispers[Math.floor(Math.random() * whispers.length)];
-       const whisperEl = document.getElementById('footerWhisper');
-       if (whisperEl) {
-           whisperEl.textContent = '— ' + whisper;
-       }
+        const whispers = [
+            'Ты справишься.',
+            'Ты не один.',
+            'Это пройдёт.',
+            'Ты уже молодец, что ты здесь.',
+            'Дыши. Всё будет хорошо.',
+            'Твоя история ещё пишется.',
+            'Ты важен.',
+            'Этот день закончится, и наступит новый.',
+            'Ты сильнее, чем думаешь.',
+            'Сейчас трудно, но это не навсегда.'
+        ];
+        const whisper = whispers[Math.floor(Math.random() * whispers.length)];
+        const whisperEl = document.getElementById('footerWhisper');
+        if (whisperEl) {
+            whisperEl.textContent = '— ' + whisper;
+        }
 
        function pluralize(count) {
            const mod10 = count % 10;
