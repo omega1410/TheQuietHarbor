@@ -21,8 +21,6 @@
 </head>
 
 <body class="page-home">
-
-    <!-- ========== HEADER ========== -->
     <header class="header">
         <div class="header-inner">
             <a href="/" class="logo">
@@ -41,15 +39,12 @@
         </div>
     </header>
 
-    <!-- ========== MAIN CONTENT ========== -->
     <main class="main">
 
-        <!-- Hero -->
         <section class="hero animate-in delay-1">
             <h1>Тебе <span class="highlight">письмо</span></h1>
             <p>Случайное анонимное послание для тех, кому сейчас трудно, грустно или одиноко. Слова, которые могут поддержать.</p>
         </section>
-        <!-- Letter Card -->
         <section class="letter-section animate-in delay-2">
             <div class="letter-card" id="letterCard">
                 <div id="letterInner">
@@ -81,7 +76,6 @@
             </div>
         </section>
 
-        <!-- Stats -->
         <section class="stats-row animate-in delay-3">
             <div class="stat-card">
                 <div class="stat-number" id="statApproved">—</div>
@@ -104,7 +98,6 @@
             </div>
         </section>
 
-        <!-- About -->
         <section class="about animate-in delay-5">
             <h2>О проекте</h2>
             <p>
@@ -120,7 +113,6 @@
 
     </main>
 
-    <!-- ========== FOOTER ========== -->
     <footer class="footer">
         <div class="footer-inner">
             <p>
@@ -169,8 +161,6 @@
        const statTotal = document.getElementById('statTotal');
        const statHelpful = document.getElementById('statHelpful');
 
-       // ========== СТАТИСТИКА ==========
-
        async function loadStats() {
            try {
                const response = await fetch('/api/stats');
@@ -184,8 +174,6 @@
                statHelpful.textContent = '...';
            }
        }
-
-       // ========== ПИСЬМО ==========
 
        async function fetchLetter() {
            letterCard.classList.add('loading');
@@ -201,7 +189,6 @@
                currentLetterId = data.id;
                currentLetterText = data.content;
 
-               // Экранируем HTML-теги в тексте письма
                const safeContent = data.content
                    .replace(/&/g, '&amp;')
                    .replace(/</g, '&lt;')
@@ -298,8 +285,6 @@
                }, 2000);
            }
        }
-
-       // ========== ЖАЛОБА ==========
 
        function reportLetter() {
            if (!currentLetterId) return;
@@ -418,8 +403,6 @@
            }
        }
 
-       // ========== ТЕМА ==========
-
        function toggleTheme() {
            const html = document.documentElement;
            const btn = document.getElementById('themeToggle');
@@ -438,8 +421,6 @@
                document.documentElement.classList.add('dark');
            }
        })();
-
-       // ========== ФРАЗА В ФУТЕРЕ ==========
 
         const whispers = [
             'Ты справишься.',
@@ -466,8 +447,6 @@
            if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'раза';
            return 'раз';
        }
-
-       // ========== ИНИЦИАЛИЗАЦИЯ ==========
 
        loadStats();
        fetchLetter();

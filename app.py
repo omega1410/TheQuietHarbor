@@ -216,7 +216,6 @@ def submit():
                 site_key=SMARTCAPTCHA_SITE_KEY,
             )
 
-        # Проверка Яндекс SmartCaptcha
         token = request.form.get("smart-token", "")
         if not verify_smartcaptcha(token):
             return render_template(
@@ -476,10 +475,10 @@ def love():
     error = None
     if request.method == "POST":
         if request.form.get("password") == LOVE_PASSWORD:
-            return render_template("love.html", unlocked=True)
+            return render_template("farewell.html", unlocked=True)
         else:
             error = "Неверный пароль"
-    return render_template("love.html", error=error)
+    return render_template("farewell.html", error=error)
 
 
 if __name__ == "__main__":

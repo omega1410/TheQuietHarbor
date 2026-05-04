@@ -20,8 +20,6 @@
 </head>
 
 <body class="page-submit">
-
-    <!-- ========== HEADER ========== -->
     <header class="header">
         <div class="header-inner">
             <a href="/" class="logo">
@@ -40,11 +38,9 @@
         </div>
     </header>
 
-    <!-- ========== MAIN ========== -->
     <main class="main">
 
         {% if success %}
-        <!-- Успешная отправка -->
         <div class="form-card success-card animate-in delay-1">
             <h2>Спасибо за твоё письмо</h2>
             <p>
@@ -55,14 +51,12 @@
         </div>
 
         {% else %}
-        <!-- Форма -->
         <div class="page-title animate-in delay-1">
             <h1>Написать письмо</h1>
             <p>Твои слова могут стать для незнакомого человека тем самым маяком, который не даст потеряться в шторме.
             </p>
         </div>
 
-        <!-- Правила -->
         <div class="guidelines animate-in delay-2">
             <h2>Пожалуйста, помни:</h2>
             <ul>
@@ -73,7 +67,6 @@
             </ul>
         </div>
 
-        <!-- Форма отправки -->
         <div class="form-card animate-in delay-3">
             {% if error %}
             <div class="error-message">{{ error }}</div>
@@ -87,7 +80,6 @@
                     <div class="char-counter" id="charCounter">0 / 1500</div>
                 </div>
 
-                <!-- Капча -->
                 <div class="form-group" style="text-align: center;">
                     <div id="captcha-container" style="display: inline-block;"></div>
                     <input type="hidden" name="smart-token" id="smart-token">
@@ -104,7 +96,6 @@
 
     </main>
 
-    <!-- ========== FOOTER ========== -->
     <footer class="footer">
         <div class="footer-inner">
             <p>
@@ -140,8 +131,6 @@
         </div>
         </div>
     </footer>
-
-    <!-- ========== SCRIPTS ========== -->
     <script>
         function updateCounter() {
             const textarea = document.getElementById('content');

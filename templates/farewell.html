@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прочитай меня</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fdf8f3;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Georgia', serif;
+            background-image: radial-gradient(ellipse at 50% 50%, rgba(193, 102, 91, 0.06) 0%, transparent 70%);
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .message-block {
+            text-align: left;
+            line-height: 2;
+            font-size: 1.15rem;
+            color: #4a3f38;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .message-block p {
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeIn 1.4s ease forwards;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-block p:nth-child(1) {
+            animation-delay: 0.8;
+        }
+
+        .message-block p:nth-child(2) {
+            animation-delay: 1.8s;
+        }
+
+        .message-block p:nth-child(3) {
+            animation-delay: 4.5s;
+        }
+
+        .message-block p:nth-child(4) {
+            animation-delay: 11.2s;
+        }
+
+        .message-block p:nth-child(5) {
+            animation-delay: 14s;
+        }
+
+        .message-block p:nth-child(6) {
+            animation-delay: 24s;
+        }
+
+        .message-block p:nth-child(7) {
+            animation-delay: 30s;
+        }
+
+        .message-block p:nth-child(8) {
+            animation-delay: 34.2s;
+        }
+
+        .message-block p:nth-child(9) {
+            animation-delay: 39s;
+        }
+
+        .message-block p:nth-child(10) {
+            animation-delay: 42.8s;
+        }
+
+        .message-block p:nth-child(11) {
+            animation-delay: 50.5s;
+        }
+
+        .message-block p:nth-child(12) {
+            animation-delay: 55.2s;
+        }
+
+        .message-block p:nth-child(13) {
+            animation-delay: 59s;
+        }
+
+        .message-block p:nth-child(14) {
+            animation-delay: 63.8s;
+        }
+
+        .message-block p:nth-child(15) {
+            animation-delay: 49s;
+        }
+
+        .message-block p:nth-child(16) {
+            animation-delay: 52.5s;
+        }
+
+        .message-block p:nth-child(17) {
+            animation-delay: 56s;
+        }
+
+        .message-block p:nth-child(18) {
+            animation-delay: 59.5s;
+        }
+
+        .message-block p:nth-child(19) {
+            animation-delay: 63s;
+        }
+
+        .message-block p:nth-child(20) {
+            animation-delay: 66.5s;
+        }
+
+        .password-form {
+            animation: fadeIn 1s ease forwards;
+            text-align: center;
+        }
+
+        .password-form input {
+            padding: 0.8rem 1.2rem;
+            border: 1.5px solid #e0dcd5;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.7);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .password-form input:focus {
+            border-color: #c1665b;
+            box-shadow: 0 0 0 4px rgba(193, 102, 91, 0.1);
+        }
+
+        .password-form button {
+            padding: 0.8rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            background: #c1665b;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .password-form button:hover {
+            background: #a8554d;
+            transform: scale(1.03);
+        }
+
+        .error {
+            color: #c1665b;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        {% if unlocked %}
+        <div class="message-block">
+            <p><b>Привет, Полин</b>.</p>
+            <p>Наверное, это самое странное сообщение, которое я когда-либо писал. И, возможно, самое честное. Поэтому я напишу его так, как я умею.</p>
+            <p>Я долго думал, стоит ли вообще тебе это говорить. Постоянно находил причины промолчать: неподходящий
+                момент, сомнения в себе, страх выглядеть глупо или навязчиво. Но со временем понял одну простую вещь — о
+                действительно важных чувствах лучше говорить <b>вовремя</b>.</p>
+            <p>Так вышло, что я <b>полюбил тебя</b>.</p>
+            <p>Не резко, не из-за какого-то одного момента. Это чувство просто постепенно стало частью моей жизни. Мне
+                было спокойно рядом с тобой. Нравилось слушать тебя, смотреть на тебя, замечать мелочи, которые,
+                возможно, никто кроме меня не замечал. И как бы не складывались мои дни — хорошо, тяжело, тревожно или
+                счастливо — мысли о тебе всегда оставались чем-то светлым.</p>
+            <p>Сколько себя помню, я всю свою сознательную жизнь любил смотреть на звезды. В них было что-то, что всегда меня успокаивало: тишина,
+                свет и ощущение, что даже сквозь огромную темноту можно продолжать сиять. И я мог часами сидеть, и смотреть только на них, мечтая о лучшем.</p>
+            <p>Но потом появилась <b>ты</b>. И впервые я понял, что человек может восхищать меня сильнее, чем ночное небо.</p>
+            <p>Я не говорю это для того, чтобы чего-то от тебя ждать или ставить тебя в неловкое положение. Мне просто
+                стало важно, чтобы ты знала правду.</p>
+            <p>Наверное, если бы не одно обстоятельство, я так бы и продолжал молчать.</p>
+            <p>Несколько месяцев назад у меня начались серьезные проблемы со здоровьем. После обследований врачи
+                мне сообщили о необходимости операции. К счастью, шансы успешной операции велики, и я стараюсь держаться именно
+                за них, но вместе с этим пришло понимание, что некоторые вещи нельзя откладывать «на потом», потому что
+                этого «потом» может просто не оказаться.</p>
+            <p>Именно поэтому я решил написать тебе сейчас.</p>
+            <p>Я очень прошу тебя не рассказывать никому об этом. Не хочу, чтобы люди смотрели на меня через призму жалости
+                или тревоги. Пусть все останется между нами.</p>
+            <p>Береги себя, пожалуйста. И спасибо тебе за то чувство, которое ты подарила мне, даже сама того не зная. Надеюсь, у тебя всегда будет тот человек, который сможет найти тебя по всему Адлеру :)
+            </p>
+            <p><b>Обнимаю тебя</b>.</p>
+        </div>
+        {% else %}
+        <form method="POST" class="password-form">
+            {% if error %}<p class="error">{{ error }}</p>{% endif %}
+            <input type="password" name="password" placeholder="Пароль" required autofocus>
+            <button type="submit">Открыть</button>
+        </form>
+        {% endif %}
+    </div>
+</body>
+
+</html>
