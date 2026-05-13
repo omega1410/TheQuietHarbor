@@ -185,7 +185,19 @@
                 });
             }
         });
+
+        function acceptCookies() {
+            document.getElementById('cookie-consent').classList.add('hidden');
+            localStorage.setItem('cookies_accepted', '1');
+        }
+
+        if (localStorage.getItem('cookies_accepted') === '1') {
+            document.getElementById('cookie-consent').classList.add('hidden');
+        }
     </script>
+    <div id="cookie-consent" class="cookie-consent">
+        <p>Я не использую файлы cookie для отслеживания. Только техническая кука для запоминания тёмной темы и дневника настроения. Продолжая использовать сайт, Вы соглашаетесь с этим.</p>
+    <button onclick="acceptCookies()" class="btn btn-primary" style="padding: 0.4rem 1.2rem; font-size: 0.85rem;">Понятно</button>
 </body>
 
 </html>
